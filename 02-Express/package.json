@@ -1,15 +1,17 @@
 {
-  "name": "01-node-basics",
+  "name": "02-express",
   "version": "1.0.0",
   "description": "",
-  "main": "1-intro.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node app.js",
     "start:dev": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1"
+  },
   "devDependencies": {
     "nodemon": "^2.0.18"
   }
