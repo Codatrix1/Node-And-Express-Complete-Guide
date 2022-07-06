@@ -1,13 +1,15 @@
-// IMPORT
+// imports
+const colors = require("colors");
 const http = require("http");
 
-// CREATE SERVER
+// create server
 const server = http.createServer((req, res) => {
-  console.log("User hit the server");
-  res.end("Home Page");
+  res.writeHead(200, { "content-type": "text/html" });
+  res.write("<h1>Home Page</h1>");
+  res.end();
 });
 
-// LISTEN TO SERVER
+// listen to server
 server.listen(5000, () => {
-  console.log(`Application running on port 5000...`);
+  console.log(`Application running on port 5000...`.yellow.bold);
 });
