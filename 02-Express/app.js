@@ -3,6 +3,10 @@
 //----------
 const colors = require("colors");
 const http = require("http");
+const fs = require("fs");
+
+// get all files
+const homePage = fs.readFileSync("./index.html");
 
 //---------------
 // CREATE SERVER
@@ -16,7 +20,7 @@ const server = http.createServer((req, res) => {
   // Home
   if (url === "/") {
     res.writeHead(200, { "content-type": "text/html" });
-    res.write("<h1>Home Page</h1>");
+    res.write(homePage);
     res.end();
 
     // About
