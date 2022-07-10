@@ -48,9 +48,9 @@ app.get("/api/products/:productID/reviews/:reviewID", (req, res) => {
 
 //---------------------------
 // QUERY STRING as PARAMS
-app.get("/api/v2/products", (req, res) => {
+app.get("/api/v2/products/query", (req, res) => {
   // Client's Request
-  // http://localhost:5000/api/v2/products?search=a&limit=1
+  // http://localhost:5000/api/v2/products/query?search=a&limit=1
 
   // console.log(req.query);
   const { search, limit } = req.query;
