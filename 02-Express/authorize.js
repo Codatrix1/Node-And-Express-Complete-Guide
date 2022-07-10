@@ -1,4 +1,5 @@
 const authorize = (req, res, next) => {
+  console.log("Authorization Middleware ran !!!");
   const { user } = req.query;
 
   if (user === "john") {
