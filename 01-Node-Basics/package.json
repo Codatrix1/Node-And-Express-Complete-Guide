@@ -8,7 +8,7 @@
     "start:dev": "nodemon app.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Codatrix",
   "license": "ISC",
   "devDependencies": {
     "nodemon": "^2.0.18"
