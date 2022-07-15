@@ -23,7 +23,7 @@ app.use("/api/v2/tasks", taskRouter);
 //-------------
 // Start Server
 //-------------
-const PORT = 3000;
-app.listen(3000, () => {
+const PORT = 5000;
+app.listen(5000, () => {
   console.log(`Server is running on port ${PORT}...`.yellow.bold);
 });

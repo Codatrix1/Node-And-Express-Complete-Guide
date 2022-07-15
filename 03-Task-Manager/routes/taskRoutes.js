@@ -7,7 +7,16 @@ const taskController = require("../controllers/taskController");
 //----------------
 // Define Routes
 //----------------
-router.route("/").get(taskController.getAllTasks);
+router
+  .route("/")
+  .get(taskController.getAllTasks)
+  .post(taskController.createTask);
+
+router
+  .route("/:id")
+  .get(taskController.getSingleTask)
+  .patch(taskController.updateTask)
+  .delete(taskController.deleteTask);
 
 //----------------
 // Default Export
