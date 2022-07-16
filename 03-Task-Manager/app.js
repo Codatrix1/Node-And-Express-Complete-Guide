@@ -1,3 +1,6 @@
+require("dotenv").config();
+const connectDB = require("./db/connect");
+
 const express = require("express");
 const app = express();
 const colors = require("colors");
@@ -23,7 +26,22 @@ app.use("/api/v2/tasks", taskRouter);
 //-------------
 // Start Server
 //-------------
-const PORT = 5000;
-app.listen(5000, () => {
-  console.log(`Server is running on port ${PORT}...`.yellow.bold);
-});
+const port = process.env.PORT || 5000;
+const start = async () => {
+  try {
+    const conn = await connectDB(process.env.MONGO_URI);
+    console.log(`MongoDB Connected: ${conn.connection.host}`.cyan.underline);
+
+    app.listen(5000, () => {
+      console.log(
+        `Server running in ${process.env.NODE_ENV} mode on port ${port}...`
+          .yellow.bold
+      );
+    });
+  } catch (error) {
+    console.log(`Error 🔥: ${error.message}`.red.underline.bold);
+    process.exit(1);
+  }
+};
+
+start();
