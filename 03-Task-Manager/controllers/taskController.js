@@ -1,3 +1,6 @@
+// imports
+const Task = require("../models/taskModel");
+
 // @ desc Get All Tasks
 // @ route GET /api/v2/tasks
 // @ access Public
@@ -16,9 +19,13 @@ const getSingleTask = (req, res) => {
 // @ desc Create Task
 // @ route POST /api/v2/tasks
 // @ access Public
-const createTask = (req, res) => {
-  // Test for middleware
-  res.json(req.body);
+const createTask = async (req, res) => {
+  try {
+    const task = await Task.create(req.body);
+    res.status(201).json({ task });
+  } catch (error) {
+    res.status(500).json({ msg: error });
+  }
 };
 
 // @ desc Update Task
