@@ -16,7 +16,8 @@ router
   .route("/:id")
   .get(taskController.getSingleTask)
   .patch(taskController.updateTask)
-  .delete(taskController.deleteTask);
+  .delete(taskController.deleteTask)
+  .put(taskController.editTask);
 
 //----------------
 // Default Export

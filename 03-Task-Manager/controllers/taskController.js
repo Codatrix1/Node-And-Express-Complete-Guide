@@ -91,6 +91,31 @@ const updateTask = async (req, res) => {
   }
 };
 
+// @ desc Update Task: For Testing ONLY
+// @ route PUT /api/v2/tasks/:id
+// @ access Public
+const editTask = async (req, res) => {
+  try {
+    const { id: taskID } = req.params;
+
+    const task = await Task.findOneAndUpdate({ _id: taskID }, req.body, {
+      new: true,
+      runValidators: true,
+      overwrite: true,
+    });
+
+    if (!task) {
+      return res
+        .status(404)
+        .json({ msg: `No tak found with the ID: ${taskID}` });
+    }
+
+    res.status(200).json({ task });
+  } catch (error) {
+    res.status(500).json({ msg: error });
+  }
+};
+
 //---------------
 // Named Exports
 //---------------
@@ -100,4 +125,5 @@ module.exports = {
   createTask,
   updateTask,
   deleteTask,
+  editTask,
 };
