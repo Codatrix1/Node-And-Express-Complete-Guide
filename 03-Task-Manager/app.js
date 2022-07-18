@@ -11,6 +11,7 @@ const taskRouter = require("./routes/taskRoutes");
 //------------------
 // Middlewares
 //------------------
+app.use(express.static("./public"));
 app.use(express.json());
 
 // test route
