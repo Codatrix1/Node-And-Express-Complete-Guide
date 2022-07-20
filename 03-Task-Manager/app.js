@@ -6,7 +6,8 @@ const app = express();
 const colors = require("colors");
 
 // import middlewares
-const notFound = require("./middlewares/notFoundMiddleware");
+const notFoundMiddleware = require("./middlewares/notFoundMiddleware");
+const errorHandlerMiddleware = require("./middlewares/errorHandlerMiddleware");
 
 // import routers
 const taskRouter = require("./routes/taskRoutes");
@@ -28,7 +29,8 @@ app.get("/hello", (req, res) => {
 app.use("/api/v2/tasks", taskRouter);
 
 // Custom Middlewares
-app.use(notFound);
+app.use(notFoundMiddleware);
+app.use(errorHandlerMiddleware);
 
 //-------------
 // Start Server
