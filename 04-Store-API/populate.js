@@ -1,0 +1,23 @@
+require("dotenv").config();
+
+const connectDB = require("./db/connect");
+const Product = require("./models/productModel");
+
+const jsonProducts = require("./products.json");
+
+const start = async () => {
+  try {
+    // connectDB
+    await connectDB(process.env.MONGO_URI);
+    await Product.deleteMany();
+    await Product.create(jsonProducts);
+    console.log("Success !!!");
+
+    // Exits the process
+    process.exit(0);
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+};
+start();
