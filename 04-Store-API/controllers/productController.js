@@ -13,11 +13,15 @@ const getAllProductsStatic = async (req, res) => {
 
   // const products = await Product.find({}).select("name price");
 
-  const products = await Product.find({})
-    .sort("name")
-    .select("name price")
-    .limit(10)
-    .skip(5);
+  // const products = await Product.find({})
+  //   .sort("name")
+  //   .select("name price")
+  //   .limit(10)
+  //   .skip(5);
+
+  const products = await Product.find({ price: { $gt: 30 } })
+    .sort("price")
+    .select("name price");
 
   res.status(200).json({ nbHits: products.length, products });
 };
@@ -26,7 +30,7 @@ const getAllProducts = async (req, res) => {
   // Destructure the properties off the query string
   // console.log(req.query);
 
-  const { featured, company, name, sort, fields } = req.query;
+  const { featured, company, name, sort, fields, numericFilters } = req.query;
 
   // Define an Empty Query Object
   const queryObject = {};
@@ -43,7 +47,34 @@ const getAllProducts = async (req, res) => {
     queryObject.name = { $regex: name, $options: "i" };
   }
 
-  // console.log(queryObject);
+  // numericFilters Logic
+  if (numericFilters) {
+    console.log(numericFilters);
+
+    const operatorMap = {
+      ">": "$gt",
+      ">=": "$gte",
+      "=": "$eq",
+      "<": "$lt",
+      "<=": "$lte",
+    };
+
+    const regEx = /\b(<|>|>=|=|<=)\b/g;
+    let filters = numericFilters.replace(
+      regEx,
+      (match) => `-${operatorMap[match]}-`
+    );
+
+    const options = ["price", "rating"];
+    filters = filters.split(",").forEach((item) => {
+      const [field, operator, value] = item.split("-");
+      if (options.includes(field)) {
+        queryObject[field] = { [operator]: Number(value) };
+      }
+    });
+  }
+
+  console.log(queryObject);
 
   // SORT Logic
   let result = Product.find(queryObject);
