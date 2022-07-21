@@ -11,12 +11,21 @@ const getAllProductsStatic = async (req, res) => {
 
   // const products = await Product.find({}).sort("-name price");
 
-  const products = await Product.find({}).select("name price");
+  // const products = await Product.find({}).select("name price");
+
+  const products = await Product.find({})
+    .sort("name")
+    .select("name price")
+    .limit(10)
+    .skip(5);
+
   res.status(200).json({ nbHits: products.length, products });
 };
 
 const getAllProducts = async (req, res) => {
   // Destructure the properties off the query string
+  // console.log(req.query);
+
   const { featured, company, name, sort, fields } = req.query;
 
   // Define an Empty Query Object
@@ -53,6 +62,15 @@ const getAllProducts = async (req, res) => {
     const fieldsBy = fields.split(",").join(" ");
     result = result.select(fieldsBy);
   }
+
+  // PAGINATION, LIMIT and SKIP Logic
+  const page = +req.query.page || 1;
+  const limit = +req.query.limit || 10;
+  const skip = (page - 1) * limit;
+
+  result = result.skip(skip).limit(limit);
+  // 23 products 7 limit
+  // 4 pages 7 7 7 2
 
   const products = await result;
   res.status(200).json({ nbHits: products.length, products });
