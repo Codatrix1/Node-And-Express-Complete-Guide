@@ -8,13 +8,16 @@ const getAllProductsStatic = async (req, res) => {
   // const products = await Product.find({
   //   name: { $regex: search, $options: "i" },
   // });
-  const products = await Product.find({}).sort("-name price");
+
+  // const products = await Product.find({}).sort("-name price");
+
+  const products = await Product.find({}).select("name price");
   res.status(200).json({ nbHits: products.length, products });
 };
 
 const getAllProducts = async (req, res) => {
   // Destructure the properties off the query string
-  const { featured, company, name, sort } = req.query;
+  const { featured, company, name, sort, fields } = req.query;
 
   // Define an Empty Query Object
   const queryObject = {};
@@ -33,8 +36,8 @@ const getAllProducts = async (req, res) => {
 
   // console.log(queryObject);
 
+  // SORT Logic
   let result = Product.find(queryObject);
-
   if (sort) {
     // console.log(sort);
     const sortBy = sort.split(",").join(" ");
@@ -43,6 +46,12 @@ const getAllProducts = async (req, res) => {
   } else {
     // default sort
     result = result.sort("createdAt _id");
+  }
+
+  // Select FIELDS Logic
+  if (fields) {
+    const fieldsBy = fields.split(",").join(" ");
+    result = result.select(fieldsBy);
   }
 
   const products = await result;
