@@ -7,6 +7,7 @@
 const CustomAPIError = require("../errors/custom-error");
 const jwt = require("jsonwebtoken");
 
+//-------------------------------------------------------------
 const login = async (req, res) => {
   const { username, password } = req.body;
 
@@ -29,31 +30,22 @@ const login = async (req, res) => {
     expiresIn: "30d",
   });
 
-  res.status(200).json({ msg: "user created", token });
+  res.status(200).json({ msg: "user created", token: token });
 };
 
+//--------------------------------------------------------------------
 const dashboard = async (req, res) => {
-  const authHeader = req.headers.authorization;
+  // console.log(req.user);
 
-  if (!authHeader || !authHeader.startsWith("Bearer")) {
-    throw new CustomAPIError("No token provided", 401);
-  }
+  // req.user with the username payload is coming from the authMiddleware
+  const { username } = req.user;
 
-  const token = authHeader.split(" ")[1];
+  const luckyNumber = Math.floor(Math.random() * 100);
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    // console.log(decoded);
-
-    const luckyNumber = Math.floor(Math.random() * 100);
-
-    res.status(200).json({
-      msg: `Hello ${decoded.username}`,
-      secret: `Here is your authorized data, your lucky number is ${luckyNumber}`,
-    });
-  } catch (error) {
-    throw new CustomAPIError("Not authorized to access this route", 401);
-  }
+  res.status(200).json({
+    msg: `Hello ${username}`,
+    secret: `Here is your authorized data, your lucky number is ${luckyNumber}`,
+  });
 };
 
 module.exports = { login, dashboard };
